@@ -1,3 +1,4 @@
+import Views.CustomerManagement;
 import Views.EmployeeManagement;
 import Views.ServiceManagement;
 
@@ -19,6 +20,10 @@ public class Main {
                 switch (option) {
                     case 1 -> {
                         EmployeeManagement.employeesMenu();
+                        continueInput = false;
+                    }
+                    case 2 -> {
+                        CustomerManagement.customersMenu();
                         continueInput = false;
                     }
                     case 4 -> {
