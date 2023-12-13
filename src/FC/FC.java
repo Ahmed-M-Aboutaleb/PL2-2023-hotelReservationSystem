@@ -9,15 +9,17 @@ import java.util.Scanner;
 public class FC {
     private final String dbFolder = "C:\\hotel\\";
     private final String fileName;
+
     public FC() throws Exception {
         this("temp");
     }
+
     public FC(String fileName) throws Exception {
         this.fileName = fileName;
     }
 
     public boolean writeFile(String text) throws Exception {
-        try (FileWriter writeFile = new FileWriter(this.dbFolder+ this.fileName +".txt")) {
+        try (FileWriter writeFile = new FileWriter(this.dbFolder + this.fileName + ".txt")) {
             writeFile.write(text);
             writeFile.close();
             return true;
@@ -25,15 +27,15 @@ public class FC {
     }
 
     public boolean appendFile(String text) throws Exception {
-        try (FileWriter writeFile = new FileWriter(this.dbFolder+ this.fileName +".txt", true)) {
-            writeFile.append(text);
+        try (FileWriter writeFile = new FileWriter(this.dbFolder + this.fileName + ".txt", true)) {
+            writeFile.append(text).append("\n");
             writeFile.close();
             return true;
         }
     }
 
     public ArrayList<String> readFile() throws Exception {
-        File myFile = new File(this.dbFolder+ this.fileName +".txt");
+        File myFile = new File(this.dbFolder + this.fileName + ".txt");
         ArrayList<String> myData = new ArrayList<>();
         try (Scanner readFile = new Scanner(myFile)) {
             while (readFile.hasNextLine()) {
@@ -45,17 +47,14 @@ public class FC {
     }
 
     public boolean updateFile(String oldTex, String text) throws Exception {
-        File myFile = new File(this.dbFolder+ this.fileName +".txt");
-        File myTempFile = new File(this.dbFolder+ "temp." + this.fileName +".txt");
-        try(
-                Scanner fileInput = new Scanner(myFile);
-                PrintWriter fileOutput = new PrintWriter(myTempFile)
-        ){
-            while(fileInput.hasNext()) {
+        File myFile = new File(this.dbFolder + this.fileName + ".txt");
+        File myTempFile = new File(this.dbFolder + "temp." + this.fileName + ".txt");
+        try (Scanner fileInput = new Scanner(myFile); PrintWriter fileOutput = new PrintWriter(myTempFile)) {
+            while (fileInput.hasNext()) {
                 String original = fileInput.nextLine();
                 String trimmedLine = original.trim();
-                if(trimmedLine.equals(oldTex)) {
-                    if(text.isEmpty()) continue;
+                if (trimmedLine.equals(oldTex)) {
+                    if (text.isEmpty()) continue;
                     fileOutput.println(text);
                 } else {
                     fileOutput.println(original);

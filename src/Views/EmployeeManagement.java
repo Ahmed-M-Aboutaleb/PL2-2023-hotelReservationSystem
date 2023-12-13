@@ -2,6 +2,8 @@ package Views;
 
 import User.Employee;
 import com.sun.tools.javac.Main;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EmployeeManagement {
@@ -11,11 +13,12 @@ public class EmployeeManagement {
         System.out.println("(2) View employee");
         System.out.println("(3) Update employee");
         System.out.println("(4) Delete employee");
-        System.out.println("(5) Back");
+        System.out.println("(5) View all employees");
+        System.out.println("(6) Back");
         Scanner userInput = new Scanner(System.in);
         boolean continueInput = true;
         do {
-            try{
+            try {
                 int option = userInput.nextInt();
                 switch (option) {
                     case 1 -> {
@@ -36,16 +39,20 @@ public class EmployeeManagement {
                         EmployeeManagement.deleteEmployee();
                     }
                     case 5 -> {
+                        continueInput = false;
+                        EmployeeManagement.allEmployees();
+                    }
+                    case 6 -> {
                         Main.main(null);
                         continueInput = false;
                     }
                     default -> throw new Exception("Invalid option");
                 }
-            } catch(Exception e) {
-                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
                 userInput.nextLine(); // Clear the buffer
             }
-        } while(continueInput);
+        } while (continueInput);
     }
 
     private static void addEmployee() {
@@ -66,7 +73,7 @@ public class EmployeeManagement {
                     EmployeeManagement.employeesMenu();
                     continueInput = false;
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
                     userInput.nextLine(); // Clear the buffer
                 }
             } while (continueInput);
@@ -83,8 +90,8 @@ public class EmployeeManagement {
                     System.out.print("Enter id: ");
                     String id = userInput.nextLine();
                     myEmployee.setID(id);
-                    myEmployee = (Employee)myEmployee.read(id);
-                    if(myEmployee.getName() == null) {
+                    myEmployee = (Employee) myEmployee.read(id);
+                    if (myEmployee.getName() == null) {
                         System.out.println("There is no employee with that id!");
                         continue;
                     }
@@ -95,7 +102,7 @@ public class EmployeeManagement {
                     EmployeeManagement.employeesMenu();
                     continueInput = false;
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
                     userInput.nextLine(); // Clear the buffer
                 }
             } while (continueInput);
@@ -124,7 +131,7 @@ public class EmployeeManagement {
                     EmployeeManagement.employeesMenu();
                     continueInput = false;
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
                     userInput.nextLine(); // Clear the buffer
                 }
             } while (continueInput);
@@ -141,16 +148,33 @@ public class EmployeeManagement {
                     System.out.print("Enter id: ");
                     String id = userInput.nextLine();
                     myEmployee.setID(id);
-                    myEmployee = (Employee)myEmployee.read(id);
+                    myEmployee = (Employee) myEmployee.read(id);
                     myEmployee.delete(myEmployee);
                     System.out.println("Deleted employee with id: " + myEmployee.getID());
                     EmployeeManagement.employeesMenu();
                     continueInput = false;
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
                     userInput.nextLine(); // Clear the buffer
                 }
             } while (continueInput);
+        }
+    }
+
+    private static void allEmployees() {
+        try {
+            Employee myEmployee = new Employee();
+            ArrayList<Employee> allEmployees = myEmployee.getAll();
+            for (Employee employee : allEmployees) {
+                System.out.println("ID: " + employee.getID());
+                System.out.println("Name: " + employee.getName());
+                System.out.println("Age: " + employee.getAge());
+                System.out.println("Salary: " + employee.getSalary());
+                System.out.print("\n");
+            }
+            EmployeeManagement.employeesMenu();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }

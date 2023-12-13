@@ -1,4 +1,5 @@
 package User;
+
 import FC.CRUD;
 
 public abstract class User implements CRUD {
@@ -23,14 +24,12 @@ public abstract class User implements CRUD {
     }
 
     public void setName(String name) throws Exception {
-        if(!name.matches("[a-zA-Z]+"))
-            throw new Exception("Invalid name");
+        if (!name.matches("[a-zA-Z]+")) throw new Exception("Invalid name");
         this.name = name;
     }
 
     public void setAge(int age) throws Exception {
-        if(age <= 0 || age >150)
-            throw new Exception("Invalid age");
+        if (age <= 0 || age > 150) throw new Exception("Invalid age");
         this.age = age;
     }
 }
