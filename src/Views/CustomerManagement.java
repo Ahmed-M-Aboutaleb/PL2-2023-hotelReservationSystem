@@ -1,9 +1,10 @@
 package Views;
 
 import User.Customer;
-import com.sun.tools.javac.Main;
+import Main.Main;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class CustomerManagement {
@@ -57,11 +58,11 @@ public class CustomerManagement {
 
     private static void addCustomer() {
         try (Scanner userInput = new Scanner(System.in)) {
-            Customer myCustomer = new Customer();
             boolean continueInput = true;
 
             do {
                 try {
+                    Customer myCustomer = new Customer();
                     System.out.print("Enter name: ");
                     myCustomer.setName(userInput.nextLine());
                     System.out.print("Enter age: ");
@@ -80,19 +81,15 @@ public class CustomerManagement {
 
     private static void viewCustomer() {
         try (Scanner userInput = new Scanner(System.in)) {
-            Customer myCustomer = new Customer();
             boolean continueInput = true;
 
             do {
                 try {
+                    Customer myCustomer = new Customer();
                     System.out.print("Enter id: ");
                     String id = userInput.nextLine();
                     myCustomer.setID(id);
                     myCustomer = (Customer) myCustomer.read(id);
-                    if (myCustomer.getName() == null) {
-                        System.out.println("There is no employee with that id!");
-                        continue;
-                    }
                     System.out.println(myCustomer);
                     CustomerManagement.customersMenu();
                     continueInput = false;
@@ -106,11 +103,11 @@ public class CustomerManagement {
 
     private static void updateCustomer() {
         try (Scanner userInput = new Scanner(System.in)) {
-            Customer myCustomer = new Customer();
-            Customer myOldCustomer = new Customer();
             boolean continueInput = true;
             do {
                 try {
+                    Customer myCustomer = new Customer();
+                    Customer myOldCustomer = new Customer();
                     System.out.print("Enter id: ");
                     String id = userInput.nextLine();
                     myCustomer.setID(id);
@@ -136,11 +133,11 @@ public class CustomerManagement {
 
     private static void deleteCustomer() {
         try (Scanner userInput = new Scanner(System.in)) {
-            Customer myCustomer = new Customer();
             boolean continueInput = true;
 
             do {
                 try {
+                    Customer myCustomer = new Customer();
                     System.out.print("Enter id: ");
                     String id = userInput.nextLine();
                     myCustomer.setID(id);

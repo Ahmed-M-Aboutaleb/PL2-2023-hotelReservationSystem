@@ -1,7 +1,7 @@
 package Views;
 
 import User.Employee;
-import com.sun.tools.javac.Main;
+import Main.Main;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -57,11 +57,11 @@ public class EmployeeManagement {
 
     private static void addEmployee() {
         try (Scanner userInput = new Scanner(System.in)) {
-            Employee myEmployee = new Employee();
             boolean continueInput = true;
 
             do {
                 try {
+                    Employee myEmployee = new Employee();
                     System.out.print("Enter name: ");
                     myEmployee.setName(userInput.nextLine());
                     System.out.print("Enter age: ");
@@ -82,19 +82,15 @@ public class EmployeeManagement {
 
     private static void viewEmployee() {
         try (Scanner userInput = new Scanner(System.in)) {
-            Employee myEmployee = new Employee();
             boolean continueInput = true;
 
             do {
                 try {
+                    Employee myEmployee = new Employee();
                     System.out.print("Enter id: ");
                     String id = userInput.nextLine();
                     myEmployee.setID(id);
                     myEmployee = (Employee) myEmployee.read(id);
-                    if (myEmployee.getName() == null) {
-                        System.out.println("There is no employee with that id!");
-                        continue;
-                    }
                     System.out.println(myEmployee);
                     EmployeeManagement.employeesMenu();
                     continueInput = false;
@@ -108,11 +104,11 @@ public class EmployeeManagement {
 
     private static void updateEmployee() {
         try (Scanner userInput = new Scanner(System.in)) {
-            Employee myEmployee = new Employee();
-            Employee myOldEmployee = new Employee();
             boolean continueInput = true;
             do {
                 try {
+                    Employee myEmployee = new Employee();
+                    Employee myOldEmployee = new Employee();
                     System.out.print("Enter id: ");
                     String id = userInput.nextLine();
                     myEmployee.setID(id);
@@ -137,11 +133,11 @@ public class EmployeeManagement {
 
     private static void deleteEmployee() {
         try (Scanner userInput = new Scanner(System.in)) {
-            Employee myEmployee = new Employee();
             boolean continueInput = true;
 
             do {
                 try {
+                    Employee myEmployee = new Employee();
                     System.out.print("Enter id: ");
                     String id = userInput.nextLine();
                     myEmployee.setID(id);

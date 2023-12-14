@@ -8,13 +8,15 @@ import java.util.UUID;
 public class Employee extends User {
     private int salary;
 
-    public Employee() {
-        this(0);
+    public Employee() throws Exception {
+        this("null", 1,0);
     }
 
-    public Employee(int salary) {
+    public Employee(String name, int age, int salary) throws Exception {
         String uniqueID = UUID.randomUUID().toString();
         super.setID(uniqueID);
+        super.setName(name);
+        super.setAge(age);
         this.salary = salary;
     }
 
@@ -47,7 +49,9 @@ public class Employee extends User {
                 break;
             }
         }
-
+        if(myEmployee == null) {
+            throw new Exception("No employee found!");
+        }
         return myEmployee;
     }
 

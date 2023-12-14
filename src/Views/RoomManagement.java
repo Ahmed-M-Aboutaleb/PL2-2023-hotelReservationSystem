@@ -1,7 +1,7 @@
 package Views;
 
-import Other.Service;
-import com.sun.tools.javac.Main;
+import Room.Room;
+import Main.Main;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -66,25 +66,178 @@ public class RoomManagement {
     }
 
     private static void addRoom() {
-        // to do addRoom
+        try (Scanner userInput = new Scanner(System.in)) {
+            Room myObject = new Room();
+            boolean continueInput = true;
+
+            do {
+                try {
+                    System.out.print("Room types:- ");
+                    for (String type: Room.types) {
+                        System.out.println(type);
+                    }
+                    System.out.print("Enter type: ");
+                    myObject.setType(userInput.nextLine());
+
+                    if (!myObject.create()) {
+                        throw new Exception("Error!");
+                    }
+                    System.out.println("Added with id: " + myObject.getID());
+                    RoomManagement.roomMenu();
+                    continueInput = false;
+                } catch (Exception e) {
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
+                    userInput.nextLine(); // Clear the buffer
+                }
+            } while (continueInput);
+        }
     }
 
     private static void viewRoom() {
-        // to do viewRoom
+        try (Scanner userInput = new Scanner(System.in)) {
+            Room myObject = new Room();
+            boolean continueInput = true;
+
+            do {
+                try {
+                    System.out.print("Enter id: ");
+                    String id = userInput.nextLine();
+                    myObject = (Room) myObject.read(id);
+                    System.out.println(myObject);
+                    RoomManagement.roomMenu();
+                    continueInput = false;
+                } catch (Exception e) {
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
+                    userInput.nextLine(); // Clear the buffer
+                }
+            } while (continueInput);
+        }
     }
 
     private static void updateRoom() {
-        // to do updateRoom
+        try (Scanner userInput = new Scanner(System.in)) {
+            Room myObject = new Room();
+            Room myOldObject = new Room();
+            boolean continueInput = true;
+            do {
+                try {
+                    System.out.print("Enter id: ");
+                    String id = userInput.nextLine();
+                    myObject.setID(id);
+                    System.out.print("Room types:- ");
+                    for (String type: Room.types) {
+                        System.out.println(type);
+                    }
+                    System.out.print("Enter type: ");
+                    myObject.setType(userInput.nextLine());
+                    System.out.print("Enter status (available/Status id): ");
+                    myObject.setStatus(userInput.nextLine());
+                    System.out.print("Enter current Service ID: ");
+                    myObject.setCurrentServiceID(userInput.nextLine());
+                    myOldObject = (Room) myOldObject.read(id);
+                    if (!myObject.update(myOldObject)) {
+                        throw new Exception("Error!");
+                    }
+                    System.out.println("Updated with id: " + myObject.getID());
+                    RoomManagement.roomMenu();
+                    continueInput = false;
+                } catch (Exception e) {
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
+                    userInput.nextLine(); // Clear the buffer
+                }
+            } while (continueInput);
+        }
     }
 
     private static void deleteRoom() {
-        // to do deleteRoom
+        try (Scanner userInput = new Scanner(System.in)) {
+            Room myObject = new Room();
+            boolean continueInput = true;
+
+            do {
+                try {
+                    System.out.print("Enter id: ");
+                    String id = userInput.nextLine();
+                    myObject.setID(id);
+                    myObject = (Room) myObject.read(id);
+                    if (!myObject.delete(myObject)) {
+                        throw new Exception("Error!");
+                    }
+                    System.out.println("Deleted with id: " + myObject.getID());
+                    RoomManagement.roomMenu();
+                    continueInput = false;
+                } catch (Exception e) {
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
+                    userInput.nextLine(); // Clear the buffer
+                }
+            } while (continueInput);
+        }
     }
 
     private static void allRooms() {
-        // to do allRooms
+        try {
+            Room myObject = new Room();
+            ArrayList<Room> allObjects = myObject.getAll();
+            for (Room object : allObjects) {
+                System.out.println(object.toString());
+            }
+            RoomManagement.roomMenu();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     private static void filterRooms() {
-        // to do filterRooms
+        try (Scanner userInput = new Scanner(System.in)) {
+            boolean continueInput = true;
+
+            do {
+                try {
+                    Room myObject = new Room();
+                    System.out.println("(1) Not Busy Rooms");
+                    System.out.println("(2) Busy Rooms");
+                    System.out.println("(3) Room's Type");
+                    System.out.println("(4) Room's Service Name");
+                    System.out.print("Enter filter key: ");
+                    int option = userInput.nextInt();
+                    userInput.nextLine();
+                    switch (option) {
+                        case 1 -> {
+                            ArrayList<Room> data = myObject.filter("notBusy", "");
+                            for (Room room: data)
+                                System.out.println(room.toString());
+                        }
+                        case 2 -> {
+                            ArrayList<Room> data = myObject.filter("busy", "");
+                            for (Room room: data)
+                                System.out.println(room.toString());
+                        }
+                        case 3 -> {
+                            System.out.print("Room types:- ");
+                            for (String type: Room.types) {
+                                System.out.println(type);
+                            }
+                            System.out.print("Enter type: ");
+                            String type = userInput.nextLine();
+                            ArrayList<Room> data = myObject.filter("type", type);
+                            for (Room room: data)
+                                System.out.println(room.toString());
+                        }
+                        case 4 -> {
+                            System.out.print("Enter service name: ");
+                            String service = userInput.nextLine();
+                            ArrayList<Room> data = myObject.filter("service", service);
+                            for (Room room: data)
+                                System.out.println(room.toString());
+                        }
+                        default -> throw new Exception("Invalid input");
+                    }
+                    RoomManagement.roomMenu();
+                    continueInput = false;
+                } catch (Exception e) {
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
+                    userInput.nextLine(); // Clear the buffer
+                }
+            } while (continueInput);
+        }
     }
 }

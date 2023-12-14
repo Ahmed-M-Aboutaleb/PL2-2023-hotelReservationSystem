@@ -21,6 +21,6 @@ This project is a console-based Java application designed for hotel receptionist
 ### Installation Instructions
 1. Clone the repository
 2. Open the project in your IDE
-3. Run the `Main.java` file
+3. Run the `Main.Main.java` file
 
 **Note:** The system is designed for a college project and is not intended for commercial use.

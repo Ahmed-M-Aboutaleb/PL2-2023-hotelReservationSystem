@@ -1,5 +1,8 @@
+package Main;
+
 import Views.CustomerManagement;
 import Views.EmployeeManagement;
+import Views.RoomManagement;
 import Views.ServiceManagement;
 
 import java.util.Scanner;
@@ -25,6 +28,10 @@ public class Main {
                     }
                     case 2 -> {
                         CustomerManagement.customersMenu();
+                        continueInput = false;
+                    }
+                    case 3 -> {
+                        RoomManagement.roomMenu();
                         continueInput = false;
                     }
                     case 4 -> {

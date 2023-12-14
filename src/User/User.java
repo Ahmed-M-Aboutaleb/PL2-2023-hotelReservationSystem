@@ -19,7 +19,9 @@ public abstract class User implements CRUD {
         return this.age;
     }
 
-    public void setID(String id) {
+    public void setID(String id) throws Exception {
+        if(id.isEmpty())
+            throw new Exception("Invalid id");
         this.id = id;
     }
 

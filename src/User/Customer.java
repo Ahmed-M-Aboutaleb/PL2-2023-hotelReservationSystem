@@ -8,13 +8,15 @@ import java.util.UUID;
 public class Customer extends User {
     private String billID;
 
-    public Customer() {
-        this("null");
+    public Customer() throws Exception {
+        this("null", 1, "null");
     }
 
-    public Customer(String billID) {
+    public Customer(String name, int age, String billID) throws Exception {
         String uniqueID = UUID.randomUUID().toString();
         super.setID(uniqueID);
+        super.setName(name);
+        super.setAge(age);
         this.billID = billID;
     }
 
@@ -23,6 +25,8 @@ public class Customer extends User {
     }
 
     public void setbillID(String billID) throws Exception {
+        if (billID.isEmpty())
+            throw new Exception("Invalid bill id");
         this.billID = billID;
     }
     @Override
@@ -45,7 +49,9 @@ public class Customer extends User {
                 break;
             }
         }
-
+        if(myCustomer == null) {
+            throw new Exception("No customers found!");
+        }
         return myCustomer;
     }
 

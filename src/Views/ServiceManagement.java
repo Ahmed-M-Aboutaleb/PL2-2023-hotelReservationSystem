@@ -1,7 +1,7 @@
 package Views;
 
 import Other.Service;
-import com.sun.tools.javac.Main;
+import Main.Main;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -94,10 +94,6 @@ public class ServiceManagement {
                     String id = userInput.nextLine();
                     myService.setID(id);
                     myService = (Service) myService.read(id);
-                    if (myService.getName().equals("temp")) {
-                        System.out.println("There is no service with that id!");
-                        continue;
-                    }
                     System.out.println(myService);
                     ServiceManagement.serviceMenu();
                     continueInput = false;

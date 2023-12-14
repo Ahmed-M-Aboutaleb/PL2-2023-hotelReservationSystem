@@ -67,7 +67,10 @@ public class Service implements CRUD {
         this.price = price;
     }
 
-    public void setUsage(int usage) {
+    public void setUsage(int usage) throws Exception {
+        if(usage <0) {
+            throw new Exception("Invalid usage");
+        }
         this.usage = usage;
     }
 
