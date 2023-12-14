@@ -95,10 +95,7 @@ public class EmployeeManagement {
                         System.out.println("There is no employee with that id!");
                         continue;
                     }
-                    System.out.println("ID: " + myEmployee.getID());
-                    System.out.println("Name: " + myEmployee.getName());
-                    System.out.println("Age: " + myEmployee.getAge());
-                    System.out.println("Salary: " + myEmployee.getSalary());
+                    System.out.println(myEmployee);
                     EmployeeManagement.employeesMenu();
                     continueInput = false;
                 } catch (Exception e) {
@@ -166,11 +163,7 @@ public class EmployeeManagement {
             Employee myEmployee = new Employee();
             ArrayList<Employee> allEmployees = myEmployee.getAll();
             for (Employee employee : allEmployees) {
-                System.out.println("ID: " + employee.getID());
-                System.out.println("Name: " + employee.getName());
-                System.out.println("Age: " + employee.getAge());
-                System.out.println("Salary: " + employee.getSalary());
-                System.out.print("\n");
+                System.out.println(employee.toString());
             }
             EmployeeManagement.employeesMenu();
         } catch (Exception e) {

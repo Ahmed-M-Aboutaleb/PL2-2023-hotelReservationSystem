@@ -14,4 +14,5 @@ public interface CRUD {
     ArrayList<?> getAll() throws Exception;
 
     ArrayList<String> toArrayList(Object obj) throws Exception;
+    String toString();
 }

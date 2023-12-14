@@ -104,4 +104,13 @@ public class Customer extends User {
         customer.add(myCustomer.getbillID());
         return customer;
     }
+    @Override
+    public String toString() {
+        String data = "";
+        data += "ID: " + this.getID() + "\n";
+        data += "Name: " + this.getName() + "\n";
+        data += "Age: " + this.getAge() + "\n";
+        data += "Bill id: " + this.getbillID() + "\n";
+        return data;
+    }
 }

@@ -24,7 +24,7 @@ public abstract class User implements CRUD {
     }
 
     public void setName(String name) throws Exception {
-        if (!name.matches("[a-zA-Z]+")) throw new Exception("Invalid name");
+        if (!name.matches("^[a-zA-Z]+$")) throw new Exception("Invalid name");
         this.name = name;
     }
 

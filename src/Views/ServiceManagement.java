@@ -98,11 +98,7 @@ public class ServiceManagement {
                         System.out.println("There is no service with that id!");
                         continue;
                     }
-                    System.out.println("ID: " + myService.getID());
-                    System.out.println("Name: " + myService.getName());
-                    System.out.println("Description: " + myService.getDescription());
-                    System.out.println("Price: " + myService.getPrice());
-                    System.out.println("Usage: " + myService.getUsage());
+                    System.out.println(myService);
                     ServiceManagement.serviceMenu();
                     continueInput = false;
                 } catch (Exception e) {
@@ -175,12 +171,7 @@ public class ServiceManagement {
             Service myService = new Service();
             ArrayList<Service> allServices = myService.getAll();
             for (Service service : allServices) {
-                System.out.println("ID: " + service.getID());
-                System.out.println("Name: " + service.getName());
-                System.out.println("Description: " + service.getDescription());
-                System.out.println("Price: " + service.getPrice());
-                System.out.println("Usage: " + service.getUsage());
-                System.out.print("\n");
+                System.out.println(service.toString());
             }
             ServiceManagement.serviceMenu();
         } catch (Exception e) {

@@ -11,7 +11,8 @@ public class Main {
         System.out.println("(2) Customers menu");
         System.out.println("(3) Rooms menu");
         System.out.println("(4) Services menu");
-        System.out.println("(5) Exit");
+        System.out.println("(5) Bills menu");
+        System.out.println("(6) Exit");
         Scanner userInput = new Scanner(System.in);
         boolean continueInput = true;
         do {
@@ -30,7 +31,7 @@ public class Main {
                         ServiceManagement.serviceMenu();
                         continueInput = false;
                     }
-                    case 5 -> System.exit(0);
+                    case 6 -> System.exit(0);
                     default -> throw new Exception();
                 }
             } catch (Exception e) {

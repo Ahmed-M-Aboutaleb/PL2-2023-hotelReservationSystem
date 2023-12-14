@@ -107,4 +107,14 @@ public class Employee extends User {
         employee.add(Integer.toString(myEmployee.getSalary()));
         return employee;
     }
+
+    @Override
+    public String toString() {
+        String data = "";
+        data += "ID: " + this.getID() + "\n";
+        data += "Name: " + this.getName() + "\n";
+        data += "Age: " + this.getAge() + "\n";
+        data += "Salary: " + this.getSalary() + "\n";
+        return data;
+    }
 }

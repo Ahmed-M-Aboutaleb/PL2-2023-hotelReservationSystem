@@ -160,5 +160,14 @@ public class Service implements CRUD {
         report.add(Double.toString((double) this.getUsage() / Service.totalUsage * 100));
         return report;
     }
-
+    @Override
+    public String toString() {
+        String data = "";
+        data += "ID: " + this.getID() + "\n";
+        data += "Name: " + this.getName() + "\n";
+        data += "Description: " + this.getDescription() + "\n";
+        data += "Price: " + this.getPrice() + "\n";
+        data += "Usage: " + this.getUsage() + "\n";
+        return data;
+    }
 }

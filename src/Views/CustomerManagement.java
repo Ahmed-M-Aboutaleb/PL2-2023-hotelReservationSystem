@@ -93,10 +93,7 @@ public class CustomerManagement {
                         System.out.println("There is no employee with that id!");
                         continue;
                     }
-                    System.out.println("ID: " + myCustomer.getID());
-                    System.out.println("Name: " + myCustomer.getName());
-                    System.out.println("Age: " + myCustomer.getAge());
-                    System.out.println("Bill ID: " + myCustomer.getbillID());
+                    System.out.println(myCustomer);
                     CustomerManagement.customersMenu();
                     continueInput = false;
                 } catch (Exception e) {
@@ -165,11 +162,7 @@ public class CustomerManagement {
             Customer myCustomer = new Customer();
             ArrayList<Customer> allCustomers = myCustomer.getAll();
             for (Customer customer : allCustomers) {
-                System.out.println("ID: " + customer.getID());
-                System.out.println("Name: " + customer.getName());
-                System.out.println("Age: " + customer.getAge());
-                System.out.println("Bill id: " + customer.getbillID());
-                System.out.print("\n");
+                System.out.println(customer.toString());
             }
             CustomerManagement.customersMenu();
         } catch (Exception e) {

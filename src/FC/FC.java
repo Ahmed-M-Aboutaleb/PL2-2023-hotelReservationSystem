@@ -18,6 +18,15 @@ public class FC {
         this.fileName = fileName;
     }
 
+    private boolean createFile() throws Exception {
+        File New_File = new File(this.dbFolder + this.fileName + ".txt");
+
+        if (New_File.createNewFile()) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean writeFile(String text) throws Exception {
         try (FileWriter writeFile = new FileWriter(this.dbFolder + this.fileName + ".txt")) {
             writeFile.write(text);
@@ -27,6 +36,8 @@ public class FC {
     }
 
     public boolean appendFile(String text) throws Exception {
+        if (!createFile())
+            throw new Exception("System Error");
         try (FileWriter writeFile = new FileWriter(this.dbFolder + this.fileName + ".txt", true)) {
             writeFile.append(text).append("\n");
             writeFile.close();
@@ -35,6 +46,8 @@ public class FC {
     }
 
     public ArrayList<String> readFile() throws Exception {
+        if (!createFile())
+            throw new Exception("System Error");
         File myFile = new File(this.dbFolder + this.fileName + ".txt");
         ArrayList<String> myData = new ArrayList<>();
         try (Scanner readFile = new Scanner(myFile)) {
@@ -47,6 +60,8 @@ public class FC {
     }
 
     public boolean updateFile(String oldTex, String text) throws Exception {
+        if (!createFile())
+            throw new Exception("System Error");
         File myFile = new File(this.dbFolder + this.fileName + ".txt");
         File myTempFile = new File(this.dbFolder + "temp." + this.fileName + ".txt");
         try (Scanner fileInput = new Scanner(myFile); PrintWriter fileOutput = new PrintWriter(myTempFile)) {
