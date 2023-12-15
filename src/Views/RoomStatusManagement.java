@@ -1,6 +1,7 @@
 package Views;
 
 import Main.Main;
+import Room.Bill;
 import Room.RoomStatus;
 import User.Customer;
 
@@ -73,8 +74,11 @@ public class RoomStatusManagement {
             do {
                 try {
                     RoomStatus myObject = new RoomStatus();
+                    Customer customer = new Customer(), oldCustomer = new Customer();
                     System.out.print("Enter Customer id: ");
                     myObject.setCustomerID(userInput.nextLine());
+                    customer = (Customer) customer.read(myObject.getCustomerID());
+                    oldCustomer = (Customer) oldCustomer.read(myObject.getCustomerID());
                     System.out.print("Enter Room id: ");
                     myObject.setRoomID(userInput.nextLine());
                     System.out.print("Enter checkout Date (yyyy-mm-dd): ");
@@ -82,6 +86,10 @@ public class RoomStatusManagement {
                     System.out.print("Enter checkin Date (yyyy-mm-dd): ");
                     myObject.setCheckinDate(userInput.nextLine());
 
+                    Bill bill = new Bill(0, customer.getID(), myObject.getRoomID(), myObject.getCheckoutDate(), myObject.getCheckinDate());
+                    bill.create();
+                    customer.setbillID(bill.getID());
+                    customer.update(oldCustomer);
 
                     if (!myObject.create()) {
                         throw new Exception("Error!");
@@ -132,7 +140,7 @@ public class RoomStatusManagement {
                     myObject.setCustomerID(userInput.nextLine());
                     System.out.print("Enter Room id: ");
                     myObject.setRoomID(userInput.nextLine());
-                    System.out.print("Room statuses:- ");
+                    System.out.print("Room statuses:- \n");
                     for (String status: RoomStatus.statuses) {
                         System.out.println(status);
                     }
@@ -217,11 +225,7 @@ public class RoomStatusManagement {
                     String id = userInput.nextLine();
                     myObject.setID(id);
                     myObject = (RoomStatus) myObject.read(id);
-                    System.out.print("Enter customer id: ");
-                    String cid = userInput.nextLine();
-                    Customer myC = new Customer();
-                    myC.read(cid);
-                    if (!myObject.assignRoomToGuest(cid)) {
+                    if (!myObject.assignRoomToGuest()) {
                         throw new Exception("Error!");
                     }
                     System.out.println("assigned successfully!");

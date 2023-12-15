@@ -68,7 +68,7 @@ public class RoomStatus implements CRUD {
         return this.checkoutDate;
     }
     public void setCheckoutDate(String checkoutDate) throws Exception {
-        if(!checkoutDate.matches("^\\\\d{4}-\\\\d{2}-\\\\d{2}$"))
+        if(!checkoutDate.matches("^\\d{4}-\\d{2}-\\d{2}$"))
             throw new Exception("Invalid checkout Date");
         LocalDate parsedCheckoutDate = LocalDate.parse(checkoutDate, DateTimeFormatter.ISO_DATE);
         LocalDate currentDate = LocalDate.now();
@@ -82,14 +82,8 @@ public class RoomStatus implements CRUD {
         return this.checkinDate;
     }
     public void setCheckinDate(String checkinDate) throws Exception {
-        if(!checkinDate.matches("^\\\\d{4}-\\\\d{2}-\\\\d{2}$"))
-            throw new Exception("Invalid checkout Date");
-        LocalDate parsedCheckoutDate = LocalDate.parse(checkinDate, DateTimeFormatter.ISO_DATE);
-        LocalDate currentDate = LocalDate.now();
-        if (parsedCheckoutDate.isBefore(currentDate)) {
-            throw new Exception("Checkin date cannot be in the past");
-        }
-
+        if(!checkinDate.matches("^\\d{4}-\\d{2}-\\d{2}$"))
+            throw new Exception("Invalid checkin Date");
         this.checkinDate = checkinDate;
     }
 
@@ -138,6 +132,11 @@ public class RoomStatus implements CRUD {
         if (!(obj instanceof RoomStatus deleteObj)) {
             throw new Exception("Invalid Room Status");
         }
+        Room myRoom = new Room(), oldRoom = new Room();
+        myRoom = (Room) myRoom.read(deleteObj.getRoomID());
+        oldRoom = (Room) oldRoom.read(deleteObj.getRoomID());
+        myRoom.setStatus("available");
+        myRoom.update(oldRoom);
         ArrayList<String> myData = this.toArrayList(deleteObj);
         String data = FC.encode(myData);
         FC myController = new FC("RoomStatus");
@@ -149,17 +148,14 @@ public class RoomStatus implements CRUD {
     public ArrayList<RoomStatus> getAll() throws Exception {
         ArrayList<RoomStatus> myData = new ArrayList<>();
         FC myController = new FC("RoomStatus");
-        ArrayList<String> rooms = myController.readFile();
-        for (String room : rooms) {
-            RoomStatus myRoom = new RoomStatus();
-            ArrayList<String> roomData = FC.decode(room);
-            myRoom.setID(roomData.get(0));
-            myRoom.setCustomerID(roomData.get(1));
-            myRoom.setRoomID(roomData.get(2));
-            myRoom.setStatus(roomData.get(3));
-            myRoom.setCheckoutDate(roomData.get(4));
-            myRoom.setCheckinDate(roomData.get(5));
-            myData.add(myRoom);
+        ArrayList<String> roomStatuses = myController.readFile();
+        for (String roomStatus : roomStatuses) {
+            RoomStatus myRoomStatus = new RoomStatus();
+            ArrayList<String> roomStatusData = FC.decode(roomStatus);
+            this.isCheckoutDatePassed(roomStatusData);
+            myRoomStatus.setRoomStatusFromArray(roomStatusData);
+            myRoomStatus.isCheckinDateToday(roomStatusData, myRoomStatus);
+            myData.add(myRoomStatus);
         }
         return myData;
     }
@@ -190,16 +186,59 @@ public class RoomStatus implements CRUD {
         data += "Checkin Date: " + this.getCheckinDate() + "\n";
         return data;
     }
+    private void setRoomStatusFromArray(ArrayList<String> data) throws Exception {
+        this.setID(data.get(0));
+        this.setCustomerID(data.get(1));
+        this.setRoomID(data.get(2));
+        this.setStatus(data.get(3));
+        this.setCheckoutDate(data.get(4));
+        this.setCheckinDate(data.get(5));
+    }
 
-    public boolean assignRoomToGuest(String customerID) throws Exception {
-        RoomStatus old = this;
-        this.setCustomerID(customerID);
+    private void isCheckoutDatePassed(ArrayList<String> roomStatusData) throws Exception {
+        LocalDate parsedCheckoutDate = LocalDate.parse(roomStatusData.get(4), DateTimeFormatter.ISO_DATE);
+        LocalDate currentDate = LocalDate.now();
+        if (parsedCheckoutDate.isBefore(currentDate)) {
+            RoomStatus oldRoomStatus = new RoomStatus(roomStatusData.get(1), roomStatusData.get(2), roomStatusData.get(3), roomStatusData.get(4), roomStatusData.get(5));
+            oldRoomStatus.setID(roomStatusData.get(0));
+            oldRoomStatus.delete(oldRoomStatus);
+            Room myRoom = new Room(), oldRoom = new Room();
+            myRoom = (Room) myRoom.read(roomStatusData.get(2));
+            oldRoom = (Room) oldRoom.read(myRoom.getID());
+            myRoom.setStatus("available");
+            myRoom.update(oldRoom);
+        }
+    }
+    private void isCheckinDateToday(ArrayList<String> roomStatusData, RoomStatus myRoomStatus) throws Exception {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate parsedCheckinDate = LocalDate.parse(roomStatusData.get(5), DateTimeFormatter.ISO_DATE);
+        if (parsedCheckinDate.isEqual(currentDate)) {
+            RoomStatus myNewRoomStatus = new RoomStatus();
+            myNewRoomStatus.setRoomStatusFromArray(roomStatusData);
+            myNewRoomStatus.setStatus(RoomStatus.statuses.get(1));
+            myNewRoomStatus.update(myRoomStatus);
+            myRoomStatus.setStatus(RoomStatus.statuses.get(1));
+            Room theRoom = new Room(), oldRoom = new Room();
+            theRoom = (Room) theRoom.read(roomStatusData.get(2));
+            oldRoom = (Room) oldRoom.read(theRoom.getID());
+            theRoom.setStatus(myRoomStatus.getID());
+            theRoom.update(oldRoom);
+        }
+    }
+
+    public boolean assignRoomToGuest() throws Exception {
+        RoomStatus old = new RoomStatus(), currRoomStatus = new RoomStatus();
+        Room theRoom = new Room();
+        theRoom = (Room) theRoom.read(this.getRoomID());
+        Room theOldRoom = new Room();
+        theOldRoom = (Room) theOldRoom.read(this.getRoomID());
+        if(!theRoom.getStatus().equals("available")) {
+            currRoomStatus = (RoomStatus) currRoomStatus.read(theRoom.getStatus());
+            currRoomStatus.delete(currRoomStatus);
+        }
+        old.setRoomStatusFromArray(this.toArrayList(this));
         this.setStatus(statuses.get(1));
         this.update(old);
-        Room theRoom = new Room();
-        theRoom = (Room) theRoom.read(theRoom.getID());
-        Room theOldRoom = new Room();
-        theRoom = (Room) theRoom.read(theRoom.getID());
         theRoom.setStatus(this.getID());
         theRoom.update(theOldRoom);
         return true;

@@ -15,7 +15,8 @@ public class CustomerManagement {
         System.out.println("(3) Update Customer");
         System.out.println("(4) Delete Customer");
         System.out.println("(5) View all Customer");
-        System.out.println("(6) Back");
+        System.out.println("(6) View Customer bill");
+        System.out.println("(7) Back");
         Scanner userInput = new Scanner(System.in);
         boolean continueInput = true;
         do {
@@ -44,6 +45,10 @@ public class CustomerManagement {
                         CustomerManagement.allCustomers();
                     }
                     case 6 -> {
+                        continueInput = false;
+                        CustomerManagement.getBill();
+                    }
+                    case 7 -> {
                         Main.main(null);
                         continueInput = false;
                     }
@@ -164,6 +169,27 @@ public class CustomerManagement {
             CustomerManagement.customersMenu();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+    private static void getBill() {
+        try (Scanner userInput = new Scanner(System.in)) {
+            boolean continueInput = true;
+
+            do {
+                try {
+                    Customer myCustomer = new Customer();
+                    System.out.print("Enter id: ");
+                    String id = userInput.nextLine();
+                    myCustomer.setID(id);
+                    myCustomer = (Customer) myCustomer.read(id);
+                    System.out.println(myCustomer.getInvoice());
+                    CustomerManagement.customersMenu();
+                    continueInput = false;
+                } catch (Exception e) {
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
+                    userInput.nextLine(); // Clear the buffer
+                }
+            } while (continueInput);
         }
     }
 }

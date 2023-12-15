@@ -1,9 +1,6 @@
 package Main;
 
-import Views.CustomerManagement;
-import Views.EmployeeManagement;
-import Views.RoomManagement;
-import Views.ServiceManagement;
+import Views.*;
 
 import java.util.Scanner;
 
@@ -36,6 +33,10 @@ public class Main {
                     }
                     case 4 -> {
                         ServiceManagement.serviceMenu();
+                        continueInput = false;
+                    }
+                    case 5 -> {
+                        BillManagement.billMenu();
                         continueInput = false;
                     }
                     case 6 -> System.exit(0);

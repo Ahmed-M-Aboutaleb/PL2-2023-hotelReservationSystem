@@ -121,6 +121,7 @@ public class Room implements CRUD {
             myRoom.setID(roomData.get(0));
             myRoom.setType(roomData.get(1));
             myRoom.setStatus(roomData.get(2));
+            myRoom.setCurrentServiceID(roomData.get(3));
             myData.add(myRoom);
         }
         return myData;
@@ -135,6 +136,7 @@ public class Room implements CRUD {
         room.add(myRoom.getID());
         room.add(myRoom.getType());
         room.add(myRoom.getStatus());
+        room.add(myRoom.getCurrentServiceID());
         return room;
     }
 

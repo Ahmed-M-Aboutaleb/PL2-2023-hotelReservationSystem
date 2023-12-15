@@ -1,7 +1,9 @@
 package Views;
 
-import Room.Room;
+import Other.Service;
+import Room.*;
 import Main.Main;
+import User.Customer;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,8 +17,9 @@ public class RoomManagement {
         System.out.println("(4) Delete Room");
         System.out.println("(5) View All Room");
         System.out.println("(6) Filter Rooms");
-        System.out.println("(7) Rooms Status Menu");
-        System.out.println("(8) Back");
+        System.out.println("(7) Request Service");
+        System.out.println("(8) Rooms Status Menu");
+        System.out.println("(9) Back");
         Scanner userInput = new Scanner(System.in);
         boolean continueInput = true;
         do {
@@ -48,11 +51,15 @@ public class RoomManagement {
                         RoomManagement.filterRooms();
                         continueInput = false;
                     }
-                    case 7 -> {
-                        RoomStatusManagement.roomMenu();
+                    case 7-> {
+                        RoomManagement.requestService();
                         continueInput = false;
                     }
                     case 8 -> {
+                        RoomStatusManagement.roomMenu();
+                        continueInput = false;
+                    }
+                    case 9 -> {
                         Main.main(null);
                         continueInput = false;
                     }
@@ -72,7 +79,7 @@ public class RoomManagement {
 
             do {
                 try {
-                    System.out.print("Room types:- ");
+                    System.out.print("Room types:-\n");
                     for (String type: Room.types) {
                         System.out.println(type);
                     }
@@ -124,7 +131,7 @@ public class RoomManagement {
                     System.out.print("Enter id: ");
                     String id = userInput.nextLine();
                     myObject.setID(id);
-                    System.out.print("Room types:- ");
+                    System.out.print("Room types:-\n");
                     for (String type: Room.types) {
                         System.out.println(type);
                     }
@@ -212,7 +219,7 @@ public class RoomManagement {
                                 System.out.println(room.toString());
                         }
                         case 3 -> {
-                            System.out.print("Room types:- ");
+                            System.out.print("Room types:-\n");
                             for (String type: Room.types) {
                                 System.out.println(type);
                             }
@@ -231,6 +238,42 @@ public class RoomManagement {
                         }
                         default -> throw new Exception("Invalid input");
                     }
+                    RoomManagement.roomMenu();
+                    continueInput = false;
+                } catch (Exception e) {
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
+                    userInput.nextLine(); // Clear the buffer
+                }
+            } while (continueInput);
+        }
+    }
+    private static void requestService() {
+        try (Scanner userInput = new Scanner(System.in)) {
+            Room myObject = new Room(), oldRoom = new Room();
+            Service myService = new Service();
+            RoomStatus myRoomStatus = new RoomStatus();
+            Bill myBill = new Bill();
+            boolean continueInput = true;
+
+            do {
+                try {
+                    Customer customer = new Customer();
+                    System.out.print("Enter service id: ");
+                    String sid = userInput.nextLine();
+                    myService = (Service) myService.read(sid);
+                    System.out.print("Enter room id: ");
+                    String rid = userInput.nextLine();
+                    myObject = (Room) myObject.read(rid);
+                    oldRoom = (Room) oldRoom.read(rid);
+                    myRoomStatus = (RoomStatus) myRoomStatus.read(myObject.getStatus());
+                    if(!myRoomStatus.getStatus().equals("approved"))
+                        throw new Exception("Pending Customer");
+                    myObject.setCurrentServiceID(myService.getID());
+                    myObject.update(oldRoom);
+                    customer = (Customer) customer.read(myRoomStatus.getCustomerID());
+                    myBill = (Bill) myBill.read(customer.getbillID());
+                    myBill.requestService(myService);
+                    System.out.println("Added :)");
                     RoomManagement.roomMenu();
                     continueInput = false;
                 } catch (Exception e) {

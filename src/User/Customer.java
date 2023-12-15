@@ -1,6 +1,7 @@
 package User;
 
 import FC.FC;
+import Room.Bill;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -9,7 +10,7 @@ public class Customer extends User {
     private String billID;
 
     public Customer() throws Exception {
-        this("null", 1, "null");
+        this("null", 1, "none");
     }
 
     public Customer(String name, int age, String billID) throws Exception {
@@ -118,5 +119,10 @@ public class Customer extends User {
         data += "Age: " + this.getAge() + "\n";
         data += "Bill id: " + this.getbillID() + "\n";
         return data;
+    }
+    public String getInvoice() throws Exception {
+        Bill myBill = new Bill();
+        myBill = (Bill) myBill.read(this.getbillID());
+        return myBill.toString();
     }
 }

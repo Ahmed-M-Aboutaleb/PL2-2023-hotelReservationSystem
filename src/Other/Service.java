@@ -2,7 +2,6 @@ package Other;
 
 import FC.CRUD;
 import FC.FC;
-import User.Employee;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -13,7 +12,6 @@ public class Service implements CRUD {
     private String description;
     private int price;
     private int usage;
-    private static int totalUsage;
 
     public Service() {
         this("temp", "temp", 0);
@@ -93,7 +91,8 @@ public class Service implements CRUD {
                 break;
             }
         }
-
+        if (myService == null)
+            throw new Exception("No service found!");
         return myService;
     }
 
@@ -155,12 +154,17 @@ public class Service implements CRUD {
         return service;
     }
 
-    public ArrayList<String> generateUsageReport() {
+    public ArrayList<String> generateUsageReport() throws Exception {
         ArrayList<String> report = new ArrayList<>();
+        FC myControler = new FC("totalUsage");
+        int totalUsage = Integer.parseInt(myControler.readFile().getFirst());
+        if(totalUsage == 0) {
+            totalUsage++;
+        }
         report.add(this.getID());
         report.add(this.getName());
         report.add(Integer.toString(this.getUsage()));
-        report.add(Double.toString((double) this.getUsage() / Service.totalUsage * 100));
+        report.add(Double.toString((double) (this.getUsage() / totalUsage) * 100));
         return report;
     }
     @Override

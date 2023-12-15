@@ -14,7 +14,8 @@ public class ServiceManagement {
         System.out.println("(3) Update Service");
         System.out.println("(4) Delete Service");
         System.out.println("(5) View All Services");
-        System.out.println("(6) Back");
+        System.out.println("(6) Generate Service report");
+        System.out.println("(7) Back");
         Scanner userInput = new Scanner(System.in);
         boolean continueInput = true;
         do {
@@ -43,6 +44,10 @@ public class ServiceManagement {
                         continueInput = false;
                     }
                     case 6 -> {
+                        ServiceManagement.report();
+                        continueInput = false;
+                    }
+                    case 7 -> {
                         Main.main(null);
                         continueInput = false;
                     }
@@ -172,6 +177,32 @@ public class ServiceManagement {
             ServiceManagement.serviceMenu();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+    private static void report() {
+
+        try (Scanner userInput = new Scanner(System.in)) {
+            Service myService = new Service();
+            boolean continueInput = true;
+
+            do {
+                try {
+                    System.out.print("Enter id: ");
+                    String id = userInput.nextLine();
+                    myService.setID(id);
+                    myService = (Service) myService.read(id);
+                    ArrayList<String> data = myService.generateUsageReport();
+                    System.out.println("Id: "+data.get(0));
+                    System.out.println("Name: "+data.get(1));
+                    System.out.println("Usage: "+data.get(2));
+                    System.out.println("Usage percentage: "+data.get(3)+"%");
+                    ServiceManagement.serviceMenu();
+                    continueInput = false;
+                } catch (Exception e) {
+                    System.out.println((e.getMessage() != null) ? e.getMessage() : "Invalid input");
+                    userInput.nextLine(); // Clear the buffer
+                }
+            } while (continueInput);
         }
     }
 }
