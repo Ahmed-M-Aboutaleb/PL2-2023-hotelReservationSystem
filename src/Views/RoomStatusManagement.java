@@ -2,6 +2,7 @@ package Views;
 
 import Main.Main;
 import Room.Bill;
+import Room.Room;
 import Room.RoomStatus;
 import User.Customer;
 
@@ -85,8 +86,10 @@ public class RoomStatusManagement {
                     myObject.setCheckoutDate(userInput.nextLine());
                     System.out.print("Enter checkin Date (yyyy-mm-dd): ");
                     myObject.setCheckinDate(userInput.nextLine());
+                    Room myRoom = new Room();
+                    myRoom = (Room) myRoom.read(myObject.getRoomID());
 
-                    Bill bill = new Bill(0, customer.getID(), myObject.getRoomID(), myObject.getCheckoutDate(), myObject.getCheckinDate());
+                    Bill bill = new Bill(myRoom.getRoomPrice(), customer.getID(), myObject.getRoomID(), myObject.getCheckoutDate(), myObject.getCheckinDate());
                     bill.create();
                     customer.setbillID(bill.getID());
                     customer.update(oldCustomer);

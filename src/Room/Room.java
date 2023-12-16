@@ -13,6 +13,7 @@ public class Room implements CRUD {
     private String type;
     private String status;
     private String currentServiceID;
+    private int roomPrice;
     public static final ArrayList<String> types = new ArrayList<>(Arrays.asList("Single", "Double", "Triple", "Quad"));
 
     public Room() {
@@ -57,7 +58,15 @@ public class Room implements CRUD {
             throw new Exception("Invalid Service id");
         this.currentServiceID = currentServiceID;
     }
-
+    public void setRoomPrice(int roomPrice) throws Exception {
+        if (roomPrice < 0 || roomPrice > 5000) {
+            throw new Exception("Invalid price");
+        }
+        this.roomPrice = roomPrice;
+    }
+    public int getRoomPrice() {
+        return this.roomPrice;
+    }
     @Override
     public boolean create() throws Exception {
         ArrayList<String> myData = this.toArrayList(this);
@@ -122,6 +131,7 @@ public class Room implements CRUD {
             myRoom.setType(roomData.get(1));
             myRoom.setStatus(roomData.get(2));
             myRoom.setCurrentServiceID(roomData.get(3));
+            myRoom.setRoomPrice(Integer.parseInt(roomData.get(4)));
             myData.add(myRoom);
         }
         return myData;
@@ -137,6 +147,7 @@ public class Room implements CRUD {
         room.add(myRoom.getType());
         room.add(myRoom.getStatus());
         room.add(myRoom.getCurrentServiceID());
+        room.add(Integer.toString(myRoom.getRoomPrice()));
         return room;
     }
 
@@ -146,6 +157,7 @@ public class Room implements CRUD {
         data += "ID: " + this.getID() + "\n";
         data += "Type: " + this.getType() + "\n";
         data += "Status: " + this.getStatus() + "\n";
+        data += "Price: " + this.getRoomPrice() + "\n";
         return data;
     }
 

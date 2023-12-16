@@ -85,6 +85,8 @@ public class RoomManagement {
                     }
                     System.out.print("Enter type: ");
                     myObject.setType(userInput.nextLine());
+                    System.out.print("Enter price: ");
+                    myObject.setRoomPrice(userInput.nextInt());
 
                     if (!myObject.create()) {
                         throw new Exception("Error!");
@@ -141,6 +143,8 @@ public class RoomManagement {
                     myObject.setStatus(userInput.nextLine());
                     System.out.print("Enter current Service ID: ");
                     myObject.setCurrentServiceID(userInput.nextLine());
+                    System.out.print("Enter price: ");
+                    myObject.setRoomPrice(userInput.nextInt());
                     myOldObject = (Room) myOldObject.read(id);
                     if (!myObject.update(myOldObject)) {
                         throw new Exception("Error!");
